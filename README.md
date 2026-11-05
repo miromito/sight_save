@@ -8,6 +8,94 @@ A lightweight native **macOS menu bar** app that protects your eyes and lower ba
 
 ---
 
+## Quick start (no experience needed)
+
+You do **not** need the big Xcode app from the App Store. Follow these steps once.
+
+### 1. Open Terminal
+
+1. Press **Command (⌘) + Space** to open Spotlight.
+2. Type **Terminal**.
+3. Press **Enter**.
+
+A window with a text prompt appears. That is Terminal.
+
+### 2. Install Apple’s Command Line Tools (one time)
+
+Copy this line, paste it into Terminal (**⌘V**), then press **Enter**:
+
+```bash
+xcode-select --install
+```
+
+A system popup appears → click **Install** → agree to the license → wait until it finishes (it can take several minutes).  
+If Terminal says the tools are already installed, that is fine — continue.
+
+### 3. Download, build, and install SightSave (one copy-paste)
+
+Copy **this whole block**, paste into Terminal, press **Enter**, and wait (first build may take a few minutes):
+
+```bash
+git clone https://github.com/miromito/sight_save.git ~/sight_save && cd ~/sight_save && chmod +x scripts/install.sh scripts/build.sh && ./scripts/install.sh
+```
+
+That command:
+
+1. Downloads the project into a folder called `sight_save` in your home folder  
+2. Builds the app  
+3. Copies **SightSave** into **Applications**  
+4. Opens it  
+
+### 4. What you should see next
+
+- An **eye** icon appears in the **menu bar** at the **top-right** of the screen (near Wi‑Fi / clock). There is **no** Dock icon — that is normal.
+- macOS may ask for **Camera** and **Notifications** → click **Allow** (you can change this later; keyboard-only mode works without the camera).
+- If macOS says the app **can’t be opened** / was blocked:
+  1. Open **System Settings**
+  2. Go to **Privacy & Security**
+  3. Scroll down and click **Open Anyway** for SightSave  
+  (Or in Finder: right-click the app → **Open** → **Open**.)
+
+### 5. Open settings
+
+Click the **eye** menu bar icon → **Settings…**
+
+### What each setting means
+
+| Setting | Default | Plain meaning |
+|---------|---------|----------------|
+| **Presence / away threshold (X)** | 2 min | How long you must sit before work timing starts; also how long you must leave before a real “rest” starts |
+| **Work limit (Y)** | 50 min | How long you may sit before SightSave asks for a break |
+| **Rest duration (Z)** | 5 min | How long you should stay away for the break to “count” and reset |
+| **Check interval** | 5 sec | How often SightSave checks if you are there |
+| **Detection mode** | Hybrid | **Hybrid** = keyboard/mouse first, camera if idle · **Camera** = face only · **Keyboard & mouse** = no camera |
+| **Warning style** | Overlay | Big on-screen reminder, or a normal macOS notification |
+| **Snooze length** | 5 min | “Remind me again in this many minutes” |
+| **Rest-done sound** | Glass | Sound when your rest is finished (there is a Preview button) |
+| **During calls** | Silent only | What to do on Zoom/Meet/etc.: stay quiet, soft ping, or normal reminders |
+| **Long-call nudge** | 60 min | Optional gentle “stand up” tip during long calls |
+| **Launch at login** | Off | Start SightSave automatically when you log in |
+
+### Update later
+
+Open Terminal and paste:
+
+```bash
+cd ~/sight_save && git pull && ./scripts/install.sh
+```
+
+### Uninstall
+
+Quit SightSave (menu bar icon → **Quit SightSave**), then in Terminal:
+
+```bash
+rm -rf /Applications/SightSave.app
+```
+
+(Optional) also delete the download folder: `rm -rf ~/sight_save`
+
+---
+
 ## What it does
 
 1. Detects whether you are present (camera face detection, keyboard/mouse activity, or both).
@@ -69,8 +157,10 @@ cd sight_save
 Uses **Swift Package Manager** by default (`swift build`). No `xcodebuild` required.
 
 ```bash
-chmod +x scripts/build.sh scripts/test-core.sh
+chmod +x scripts/build.sh scripts/install.sh scripts/test-core.sh
 ./scripts/build.sh
+# or build + copy to /Applications + open:
+./scripts/install.sh
 ```
 
 This produces:
@@ -279,6 +369,7 @@ App/SightSave/           macOS menu bar app (AppKit/SwiftUI, AVFoundation, Visio
 Package.swift            SightSaveCore + SightSave executable (SwiftPM / CLT)
 SightSave.xcodeproj/     Optional Xcode project (regenerable via project.yml + XcodeGen)
 scripts/build.sh         SwiftPM by default → dist/SightSave.app (+ zip); xcodebuild optional
+scripts/install.sh       build.sh + copy to /Applications + open (beginner-friendly)
 scripts/test-core.sh     swift test for the core package
 ```
 
