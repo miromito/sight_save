@@ -22,8 +22,10 @@ targets:
         excludes:
           - Resources/Info.plist
           - Resources/SightSave.entitlements
+    # Assets.xcassets is optional (menu bar uses SF Symbols). Kept for Xcode convenience only.
     resources:
       - path: App/SightSave/Resources/Assets.xcassets
+        optional: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.rodionlitvinoff.SightSave
@@ -40,7 +42,6 @@ targets:
           - "$(inherited)"
           - "@executable_path/../Frameworks"
         GENERATE_INFOPLIST_FILE: NO
-        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         SWIFT_ACTIVE_COMPILATION_CONDITIONS: "$(inherited)"
     dependencies:
       - package: SightSave

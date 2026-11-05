@@ -33,22 +33,25 @@ SightSave lives only in the menu bar (no Dock icon). Click the eye icon for stat
 
 ## Requirements to build
 
+**You do not need the full Xcode app.** Command Line Tools are enough.
+
 | Item | Version |
 |------|---------|
-| macOS | 13.0+ (to run); build on macOS 13+ recommended |
-| Xcode | 15 or later (includes Swift 5.9+) |
-| Command Line Tools | Matching your Xcode (`xcode-select -p` should point at Xcode) |
+| macOS | 13.0+ (to run); build on a Mac with a recent SDK |
+| **Apple Command Line Tools** (default) | Provides `swift` + macOS SDK (`xcode-select --install`) |
+| Full Xcode (optional) | 15+ — only if you prefer the `.xcodeproj` / GUI workflow |
+
+Install Command Line Tools:
+
+```bash
+xcode-select --install
+swift --version   # should print Apple Swift …
+```
 
 Optional:
 
-- [XcodeGen](https://github.com/yonaskolb/XcodeGen) — regenerates `SightSave.xcodeproj` from `project.yml` (a project file is already committed).
-
-Install Xcode from the Mac App Store, then:
-
-```bash
-sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
-sudo xcodebuild -license accept   # if prompted
-```
+- Full [Xcode](https://developer.apple.com/xcode/) from the Mac App Store (multi‑GB) if you want `xcodebuild` or the GUI
+- [XcodeGen](https://github.com/yonaskolb/XcodeGen) — regenerates `SightSave.xcodeproj` from `project.yml`
 
 ---
 
@@ -61,7 +64,9 @@ git clone https://github.com/miromito/sight_save.git
 cd sight_save
 ```
 
-### Option A — build script (recommended)
+### Option A — build script (recommended, Command Line Tools)
+
+Uses **Swift Package Manager** by default (`swift build`). No `xcodebuild` required.
 
 ```bash
 chmod +x scripts/build.sh scripts/test-core.sh
@@ -70,10 +75,32 @@ chmod +x scripts/build.sh scripts/test-core.sh
 
 This produces:
 
-- `dist/SightSave.app` (ad-hoc signed with `codesign -s -`)
+- `dist/SightSave.app` — proper bundle (`Contents/MacOS`, `Info.plist` with `LSUIElement`, bundle id `com.rodionlitvinoff.SightSave`, camera usage string), ad-hoc signed (`codesign -s -` + entitlements)
 - `dist/SightSave.zip` (unless you set `MAKE_ZIP=0`)
 
-### Option B — xcodebuild directly
+Equivalent manual SwiftPM steps:
+
+```bash
+swift build -c release --product SightSaveApp
+./scripts/build.sh   # assembles Contents/, codesigns, zips (SwiftPM is the default)
+```
+
+Useful env flags for the script:
+
+| Variable | Effect |
+|----------|--------|
+| `FORCE_SWIFTPM=1` | Always use SwiftPM (default path) |
+| `PREFER_XCODEBUILD=1` / `FORCE_XCODEBUILD=1` | Use full Xcode’s `xcodebuild` instead |
+| `HARDENED_RUNTIME=1` | Pass `--options runtime` to `codesign` |
+| `MAKE_ZIP=0` | Skip zip |
+
+### Option B — xcodebuild (full Xcode)
+
+```bash
+PREFER_XCODEBUILD=1 ./scripts/build.sh
+```
+
+Or manually:
 
 ```bash
 xcodebuild \
@@ -85,9 +112,8 @@ xcodebuild \
   CODE_SIGN_IDENTITY="-" \
   build
 
-# Copy & ad-hoc sign
 cp -R build/DerivedData/Build/Products/Release/SightSave.app dist/
-codesign --force --deep --sign - dist/SightSave.app
+codesign --force --deep --sign - --entitlements App/SightSave/Resources/SightSave.entitlements dist/SightSave.app
 ```
 
 ### Option C — Xcode GUI
@@ -98,7 +124,7 @@ codesign --force --deep --sign - dist/SightSave.app
 
 ### Unit tests (state machine only)
 
-No camera or AppKit required:
+No camera or AppKit required (works with Command Line Tools):
 
 ```bash
 ./scripts/test-core.sh
@@ -229,7 +255,8 @@ While the Mac is asleep or the screen is locked, timers **pause** and you are tr
 | No notifications | Enable Notifications for SightSave; re-request via reinstall or `tccutil` |
 | Launch at login does nothing | Keep the app in `/Applications`; toggle the setting off/on |
 | Menu bar icon missing | Look in the menu bar overflow (`<<`); restart the app |
-| Build fails | Ensure Xcode CLT point at full Xcode: `xcode-select -p` |
+| Build fails (`swift` missing) | Run `xcode-select --install`, then `swift --version` |
+| Build fails (`xcodebuild` missing) | Normal without full Xcode — use `./scripts/build.sh` (SwiftPM). Or install Xcode and set `PREFER_XCODEBUILD=1` |
 
 ---
 
@@ -249,8 +276,9 @@ While the Mac is asleep or the screen is locked, timers **pause** and you are tr
 Sources/SightSaveCore/   Pure Swift session engine + settings models (unit-tested)
 Tests/SightSaveCoreTests/
 App/SightSave/           macOS menu bar app (AppKit/SwiftUI, AVFoundation, Vision)
-SightSave.xcodeproj/     Xcode project (also regenerable via project.yml + XcodeGen)
-scripts/build.sh         Produces dist/SightSave.app (+ zip)
+Package.swift            SightSaveCore + SightSave executable (SwiftPM / CLT)
+SightSave.xcodeproj/     Optional Xcode project (regenerable via project.yml + XcodeGen)
+scripts/build.sh         SwiftPM by default → dist/SightSave.app (+ zip); xcodebuild optional
 scripts/test-core.sh     swift test for the core package
 ```
 
@@ -268,4 +296,5 @@ Issues and pull requests are welcome. Prefer small, focused changes. Keep the se
 - Face detection needs decent lighting and a visible face; Hybrid/keyboard modes help when the camera is unreliable.
 - Call detection is best-effort via system “device running somewhere” flags; unusual audio routing may false-positive.
 - Launch at login via `SMAppService` is most reliable when the app is in `/Applications`.
-- This repository’s CI environment is Linux and **cannot compile the macOS app binary**; build on a Mac with Xcode.
+- The menu bar icon uses an **SF Symbol** (no compiled asset catalog), so the app builds with Command Line Tools alone.
+- Linux CI can run `swift test` for `SightSaveCore` but **cannot** link the macOS app; build the `.app` on a Mac.
