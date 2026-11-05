@@ -56,17 +56,24 @@ codesign_app() {
   echo "==> Ad-hoc codesign"
   # Embed entitlements (camera). Skip hardened runtime by default so ad-hoc local
   # builds stay simple; set HARDENED_RUNTIME=1 to enable --options runtime.
-  local extra=()
-  if [[ "${HARDENED_RUNTIME:-0}" == "1" ]]; then
-    extra+=(--options runtime)
-  fi
+  # Avoid empty-array "${arr[@]}" under `set -u` — unbound on macOS /bin/bash 3.2.
   if [[ -f "$ENTITLEMENTS" ]]; then
-    codesign --force --deep --sign - \
-      --entitlements "$ENTITLEMENTS" \
-      "${extra[@]}" \
-      "$app"
+    if [[ "${HARDENED_RUNTIME:-0}" == "1" ]]; then
+      codesign --force --deep --sign - \
+        --entitlements "$ENTITLEMENTS" \
+        --options runtime \
+        "$app"
+    else
+      codesign --force --deep --sign - \
+        --entitlements "$ENTITLEMENTS" \
+        "$app"
+    fi
   else
-    codesign --force --deep --sign - "${extra[@]}" "$app"
+    if [[ "${HARDENED_RUNTIME:-0}" == "1" ]]; then
+      codesign --force --deep --sign - --options runtime "$app"
+    else
+      codesign --force --deep --sign - "$app"
+    fi
   fi
   echo "==> Verifying signature"
   codesign --verify --verbose=2 "$app" || true
