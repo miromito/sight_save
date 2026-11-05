@@ -1,0 +1,44 @@
+# Xcode
+build/
+DerivedData/
+*.xcuserdata
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+xcuserdata/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Packages/
+Package.resolved
+
+# CocoaPods / Carthage (not used, but ignore if present)
+Pods/
+Carthage/Build/
+
+# macOS
+.DS_Store
+**/.DS_Store
+*.swp
+*~
+
+# Build artifacts
+dist/
+*.app
+*.zip
+!docs/**/*.zip
+
+# IDE
+.idea/
+*.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+
+# Env / secrets
+.env
+.env.*
+*.pem

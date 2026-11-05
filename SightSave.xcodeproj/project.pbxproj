@@ -1,0 +1,367 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000001 /* SightSaveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* SightSaveApp.swift */; };
+		A10000000000000000000002 /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002 /* AppController.swift */; };
+		A10000000000000000000003 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* SettingsStore.swift */; };
+		A10000000000000000000004 /* PresenceMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* PresenceMonitor.swift */; };
+		A10000000000000000000005 /* CameraPresenceDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* CameraPresenceDetector.swift */; };
+		A10000000000000000000006 /* IdleTimeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000006 /* IdleTimeProvider.swift */; };
+		A10000000000000000000007 /* CallDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000007 /* CallDetector.swift */; };
+		A10000000000000000000008 /* SleepLockMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000008 /* SleepLockMonitor.swift */; };
+		A10000000000000000000009 /* LaunchAtLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000009 /* LaunchAtLogin.swift */; };
+		A1000000000000000000000A /* SoundPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000A /* SoundPlayer.swift */; };
+		A1000000000000000000000B /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000B /* NotificationManager.swift */; };
+		A1000000000000000000000C /* BreakOverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000C /* BreakOverlayWindow.swift */; };
+		A1000000000000000000000D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000D /* SettingsView.swift */; };
+		A1000000000000000000000E /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000E /* MenuBarController.swift */; };
+		A1000000000000000000000F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000F /* Assets.xcassets */; };
+		A10000000000000000000010 /* SightSaveCore in Frameworks */ = {isa = PBXBuildFile; productRef = A40000000000000000000001 /* SightSaveCore */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A20000000000000000000001 /* SightSaveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SightSaveApp.swift; sourceTree = "<group>"; };
+		A20000000000000000000002 /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
+		A20000000000000000000003 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		A20000000000000000000004 /* PresenceMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenceMonitor.swift; sourceTree = "<group>"; };
+		A20000000000000000000005 /* CameraPresenceDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPresenceDetector.swift; sourceTree = "<group>"; };
+		A20000000000000000000006 /* IdleTimeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdleTimeProvider.swift; sourceTree = "<group>"; };
+		A20000000000000000000007 /* CallDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallDetector.swift; sourceTree = "<group>"; };
+		A20000000000000000000008 /* SleepLockMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepLockMonitor.swift; sourceTree = "<group>"; };
+		A20000000000000000000009 /* LaunchAtLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLogin.swift; sourceTree = "<group>"; };
+		A2000000000000000000000A /* SoundPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPlayer.swift; sourceTree = "<group>"; };
+		A2000000000000000000000B /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		A2000000000000000000000C /* BreakOverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakOverlayWindow.swift; sourceTree = "<group>"; };
+		A2000000000000000000000D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A2000000000000000000000E /* MenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarController.swift; sourceTree = "<group>"; };
+		A2000000000000000000000F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A20000000000000000000010 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A20000000000000000000011 /* SightSave.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SightSave.entitlements; sourceTree = "<group>"; };
+		A20000000000000000000012 /* SightSave.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SightSave.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A30000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000010 /* SightSaveCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A50000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				A50000000000000000000002 /* App */,
+				A50000000000000000000009 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A50000000000000000000002 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A50000000000000000000003 /* SightSave */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A50000000000000000000003 /* SightSave */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000001 /* SightSaveApp.swift */,
+				A20000000000000000000002 /* AppController.swift */,
+				A20000000000000000000003 /* SettingsStore.swift */,
+				A50000000000000000000004 /* Presence */,
+				A50000000000000000000005 /* CallDetection */,
+				A50000000000000000000006 /* System */,
+				A50000000000000000000007 /* UI */,
+				A50000000000000000000008 /* Resources */,
+			);
+			path = SightSave;
+			sourceTree = "<group>";
+		};
+		A50000000000000000000004 /* Presence */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000004 /* PresenceMonitor.swift */,
+				A20000000000000000000005 /* CameraPresenceDetector.swift */,
+				A20000000000000000000006 /* IdleTimeProvider.swift */,
+			);
+			path = Presence;
+			sourceTree = "<group>";
+		};
+		A50000000000000000000005 /* CallDetection */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000007 /* CallDetector.swift */,
+			);
+			path = CallDetection;
+			sourceTree = "<group>";
+		};
+		A50000000000000000000006 /* System */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000008 /* SleepLockMonitor.swift */,
+				A20000000000000000000009 /* LaunchAtLogin.swift */,
+				A2000000000000000000000A /* SoundPlayer.swift */,
+				A2000000000000000000000B /* NotificationManager.swift */,
+			);
+			path = System;
+			sourceTree = "<group>";
+		};
+		A50000000000000000000007 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				A2000000000000000000000C /* BreakOverlayWindow.swift */,
+				A2000000000000000000000D /* SettingsView.swift */,
+				A2000000000000000000000E /* MenuBarController.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		A50000000000000000000008 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A2000000000000000000000F /* Assets.xcassets */,
+				A20000000000000000000010 /* Info.plist */,
+				A20000000000000000000011 /* SightSave.entitlements */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A50000000000000000000009 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000012 /* SightSave.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A60000000000000000000001 /* SightSave */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A70000000000000000000003 /* Build configuration list for PBXNativeTarget "SightSave" */;
+			buildPhases = (
+				A30000000000000000000002 /* Sources */,
+				A30000000000000000000001 /* Frameworks */,
+				A30000000000000000000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SightSave;
+			packageProductDependencies = (
+				A40000000000000000000001 /* SightSaveCore */,
+			);
+			productName = SightSave;
+			productReference = A20000000000000000000012 /* SightSave.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A80000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					A60000000000000000000001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = A70000000000000000000001 /* Build configuration list for PBXProject "SightSave" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A50000000000000000000001;
+			packageReferences = (
+				A90000000000000000000001 /* XCLocalSwiftPackageReference "." */,
+			);
+			productRefGroup = A50000000000000000000009 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A60000000000000000000001 /* SightSave */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A30000000000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1000000000000000000000F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A30000000000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000001 /* SightSaveApp.swift in Sources */,
+				A10000000000000000000002 /* AppController.swift in Sources */,
+				A10000000000000000000003 /* SettingsStore.swift in Sources */,
+				A10000000000000000000004 /* PresenceMonitor.swift in Sources */,
+				A10000000000000000000005 /* CameraPresenceDetector.swift in Sources */,
+				A10000000000000000000006 /* IdleTimeProvider.swift in Sources */,
+				A10000000000000000000007 /* CallDetector.swift in Sources */,
+				A10000000000000000000008 /* SleepLockMonitor.swift in Sources */,
+				A10000000000000000000009 /* LaunchAtLogin.swift in Sources */,
+				A1000000000000000000000A /* SoundPlayer.swift in Sources */,
+				A1000000000000000000000B /* NotificationManager.swift in Sources */,
+				A1000000000000000000000C /* BreakOverlayWindow.swift in Sources */,
+				A1000000000000000000000D /* SettingsView.swift in Sources */,
+				A1000000000000000000000E /* MenuBarController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A70000000000000000000004 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A70000000000000000000005 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		A70000000000000000000006 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App/SightSave/Resources/SightSave.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/SightSave/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rodionlitvinoff.SightSave;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A70000000000000000000007 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App/SightSave/Resources/SightSave.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/SightSave/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rodionlitvinoff.SightSave;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A70000000000000000000001 /* Build configuration list for PBXProject "SightSave" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A70000000000000000000004 /* Debug */,
+				A70000000000000000000005 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A70000000000000000000003 /* Build configuration list for PBXNativeTarget "SightSave" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A70000000000000000000006 /* Debug */,
+				A70000000000000000000007 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		A90000000000000000000001 /* XCLocalSwiftPackageReference "." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = .;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A40000000000000000000001 /* SightSaveCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A90000000000000000000001 /* XCLocalSwiftPackageReference "." */;
+			productName = SightSaveCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = A80000000000000000000001 /* Project object */;
+}
