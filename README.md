@@ -8,9 +8,74 @@ A lightweight native **macOS menu bar** app that protects your eyes and lower ba
 
 ---
 
-## Quick start (no experience needed)
+## Download & install (easiest)
 
-You do **not** need the big Xcode app from the App Store. Follow these steps once.
+No Terminal needed. Use the ready-made app from GitHub Releases (for example **v0.1.0**).
+
+### 1. Download
+
+1. Open this page in your browser: [https://github.com/miromito/sight_save/releases/latest](https://github.com/miromito/sight_save/releases/latest)
+2. Under **Assets**, click **SightSave.zip**.
+3. Wait until the download finishes (usually in your **Downloads** folder).
+
+### 2. Unpack and put it in Applications
+
+1. Open the **Downloads** folder (Finder → **Downloads**, or click the download in Safari/Chrome).
+2. **Double-click** `SightSave.zip` to unpack it. You should see **SightSave.app**.
+3. Drag **SightSave.app** into your **Applications** folder (Finder sidebar → **Applications**).
+
+### 3. Open it the first time (macOS security)
+
+The app is safe to use on your Mac, but it is **not** notarized by Apple, so macOS will warn you once.
+
+1. Open **Applications** and double-click **SightSave**.
+2. macOS may say it **can’t verify the developer** → click **Done** or **OK**.
+3. Open **System Settings** → **Privacy & Security**.
+4. Scroll down. Next to a message about SightSave, click **Open Anyway**.
+5. Confirm with your password or Touch ID, then click **Open**.
+
+**Other ways (pick one):**
+
+- In **Applications**, **right-click** (or Control-click) **SightSave** → **Open** → **Open**.
+- Or open **Terminal** and paste:
+
+```bash
+xattr -dr com.apple.quarantine /Applications/SightSave.app
+```
+
+Then open SightSave again from Applications.
+
+### 4. What you should see
+
+- An **eye** icon in the **menu bar** at the **top-right** of the screen (near Wi‑Fi / the clock). There is **no** Dock icon — that is normal.
+- macOS may ask for **Camera** and **Notifications** → click **Allow**.  
+  (You can refuse the camera and use keyboard/mouse mode later in Settings.)
+
+### 5. Open settings
+
+Click the **eye** menu bar icon → **Settings…**
+
+### Update (download method)
+
+1. Download the newest **SightSave.zip** from [Releases](https://github.com/miromito/sight_save/releases/latest).
+2. Quit SightSave (menu bar icon → **Quit SightSave**).
+3. Unpack the zip and drag the new **SightSave.app** into **Applications**, replacing the old one.
+4. Open it again (you usually will **not** need the security steps a second time).
+
+### Uninstall
+
+1. Click the menu bar icon → **Quit SightSave**.
+2. Drag **SightSave** from **Applications** to the **Trash**, or in Terminal:
+
+```bash
+rm -rf /Applications/SightSave.app
+```
+
+---
+
+## Build from source (no experience needed)
+
+Prefer this if there is no zip yet, or you want to build it yourself. You do **not** need the big Xcode app from the App Store.
 
 ### 1. Open Terminal
 
@@ -31,7 +96,7 @@ xcode-select --install
 A system popup appears → click **Install** → agree to the license → wait until it finishes (it can take several minutes).  
 If Terminal says the tools are already installed, that is fine — continue.
 
-### 3. Download, build, and install SightSave (one copy-paste)
+### 3. Download, build, and install (one copy-paste)
 
 Copy **this whole block**, paste into Terminal, press **Enter**, and wait (first build may take a few minutes):
 
@@ -39,28 +104,31 @@ Copy **this whole block**, paste into Terminal, press **Enter**, and wait (first
 git clone https://github.com/miromito/sight_save.git ~/sight_save && cd ~/sight_save && chmod +x scripts/install.sh scripts/build.sh && ./scripts/install.sh
 ```
 
-That command:
+That command downloads the project into `~/sight_save`, builds the app, copies it to **Applications**, and opens it.
 
-1. Downloads the project into a folder called `sight_save` in your home folder  
-2. Builds the app  
-3. Copies **SightSave** into **Applications**  
-4. Opens it  
+After that, the same first-launch notes apply: menu bar **eye** icon, **Allow** camera/notifications if asked, and **Open Anyway** under **System Settings → Privacy & Security** if macOS blocks the app.
 
-### 4. What you should see next
+### Update (build from source)
 
-- An **eye** icon appears in the **menu bar** at the **top-right** of the screen (near Wi‑Fi / clock). There is **no** Dock icon — that is normal.
-- macOS may ask for **Camera** and **Notifications** → click **Allow** (you can change this later; keyboard-only mode works without the camera).
-- If macOS says the app **can’t be opened** / was blocked:
-  1. Open **System Settings**
-  2. Go to **Privacy & Security**
-  3. Scroll down and click **Open Anyway** for SightSave  
-  (Or in Finder: right-click the app → **Open** → **Open**.)
+```bash
+cd ~/sight_save && git pull && ./scripts/install.sh
+```
 
-### 5. Open settings
+### Uninstall (build from source)
 
-Click the **eye** menu bar icon → **Settings…**
+Quit SightSave, then:
 
-### What each setting means
+```bash
+rm -rf /Applications/SightSave.app
+```
+
+(Optional) also delete the download folder: `rm -rf ~/sight_save`
+
+---
+
+## What each setting means
+
+Click the menu bar icon → **Settings…**
 
 | Setting | Default | Plain meaning |
 |---------|---------|----------------|
@@ -75,24 +143,6 @@ Click the **eye** menu bar icon → **Settings…**
 | **During calls** | Silent only | What to do on Zoom/Meet/etc.: stay quiet, soft ping, or normal reminders |
 | **Long-call nudge** | 60 min | Optional gentle “stand up” tip during long calls |
 | **Launch at login** | Off | Start SightSave automatically when you log in |
-
-### Update later
-
-Open Terminal and paste:
-
-```bash
-cd ~/sight_save && git pull && ./scripts/install.sh
-```
-
-### Uninstall
-
-Quit SightSave (menu bar icon → **Quit SightSave**), then in Terminal:
-
-```bash
-rm -rf /Applications/SightSave.app
-```
-
-(Optional) also delete the download folder: `rm -rf ~/sight_save`
 
 ---
 
