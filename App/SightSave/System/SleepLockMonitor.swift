@@ -5,11 +5,13 @@ import Foundation
 @MainActor
 final class SleepLockMonitor {
     private(set) var isUnavailable = false
-    var onChange: ((Bool) -> Void)?
+    var onChange: (@MainActor (Bool) -> Void)?
 
     private var observers: [NSObjectProtocol] = []
 
     func start() {
+        stop()
+
         let workspace = NSWorkspace.shared.notificationCenter
         let distributed = DistributedNotificationCenter.default()
 
@@ -18,7 +20,9 @@ final class SleepLockMonitor {
             object: nil,
             queue: .main
         ) { [weak self] _ in
-            Task { @MainActor in self?.setUnavailable(true) }
+            Task { @MainActor in
+                self?.setUnavailable(true)
+            }
         })
 
         observers.append(workspace.addObserver(
@@ -26,7 +30,9 @@ final class SleepLockMonitor {
             object: nil,
             queue: .main
         ) { [weak self] _ in
-            Task { @MainActor in self?.setUnavailable(false) }
+            Task { @MainActor in
+                self?.setUnavailable(false)
+            }
         })
 
         observers.append(distributed.addObserver(
@@ -34,7 +40,9 @@ final class SleepLockMonitor {
             object: nil,
             queue: .main
         ) { [weak self] _ in
-            Task { @MainActor in self?.setUnavailable(true) }
+            Task { @MainActor in
+                self?.setUnavailable(true)
+            }
         })
 
         observers.append(distributed.addObserver(
@@ -42,15 +50,18 @@ final class SleepLockMonitor {
             object: nil,
             queue: .main
         ) { [weak self] _ in
-            Task { @MainActor in self?.setUnavailable(false) }
+            Task { @MainActor in
+                self?.setUnavailable(false)
+            }
         })
     }
 
     func stop() {
         let workspace = NSWorkspace.shared.notificationCenter
+        let distributed = DistributedNotificationCenter.default()
         for observer in observers {
             workspace.removeObserver(observer)
-            DistributedNotificationCenter.default().removeObserver(observer)
+            distributed.removeObserver(observer)
         }
         observers.removeAll()
     }

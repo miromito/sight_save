@@ -1,16 +1,15 @@
 import AppKit
 import SightSaveCore
-import SwiftUI
 
 @MainActor
 final class MenuBarController: NSObject {
     private let statusItem: NSStatusItem
     private let menu = NSMenu()
 
-    var onPauseResume: (() -> Void)?
-    var onReset: (() -> Void)?
-    var onOpenSettings: (() -> Void)?
-    var onQuit: (() -> Void)?
+    var onPauseResume: (@MainActor () -> Void)?
+    var onReset: (@MainActor () -> Void)?
+    var onOpenSettings: (@MainActor () -> Void)?
+    var onQuit: (@MainActor () -> Void)?
 
     private var pauseItem: NSMenuItem!
     private var stateItem: NSMenuItem!
@@ -95,7 +94,9 @@ final class MenuBarController: NSObject {
             details.append("Rest \(StatusTextFormatter.formatClock(snapshot.restElapsed)) / \(Int(settings.restMinutes))m")
         }
         if snapshot.phase == .settling {
-            details.append("Present \(StatusTextFormatter.formatClock(snapshot.presenceAccumulated)) / \(Int(settings.presenceThresholdMinutes))m")
+            details.append(
+                "Present \(StatusTextFormatter.formatClock(snapshot.presenceAccumulated)) / \(Int(settings.presenceThresholdMinutes))m"
+            )
         }
         detailItem.title = details.isEmpty ? "Waiting for presence…" : details.joined(separator: " · ")
 

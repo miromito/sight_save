@@ -19,7 +19,7 @@ final class AppController: ObservableObject {
     private var lastSnapshot = SessionSnapshot.initial
     private var cancellables = Set<AnyCancellable>()
 
-    init(settingsStore: SettingsStore = SettingsStore()) {
+    init(settingsStore: SettingsStore) {
         self.settingsStore = settingsStore
         self.engine = SessionEngine(settings: settingsStore.settings)
         wireMenu()
@@ -27,24 +27,31 @@ final class AppController: ObservableObject {
         observeSettings()
     }
 
+    convenience init() {
+        self.init(settingsStore: SettingsStore())
+    }
+
     func start() {
-        Task {
-            await notifications.configure()
-            await presenceMonitor.prepare(mode: settingsStore.settings.detectionMode)
-            if presenceMonitor.cameraDenied {
-                notifyCameraFallback()
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            await self.notifications.configure()
+            await self.presenceMonitor.prepare(mode: self.settingsStore.settings.detectionMode)
+            if self.presenceMonitor.cameraDenied {
+                self.notifyCameraFallback()
             }
-            sleepLockMonitor.start()
-            sleepLockMonitor.onChange = { [weak self] _ in
+            self.sleepLockMonitor.start()
+            self.sleepLockMonitor.onChange = { [weak self] _ in
                 self?.runCheck()
             }
-            restartLoop()
-            runCheck()
+            self.restartLoop()
+            self.runCheck()
         }
     }
 
     func stop() {
         checkTask?.cancel()
+        checkTask = nil
+        sleepLockMonitor.onChange = nil
         sleepLockMonitor.stop()
     }
 
@@ -92,12 +99,13 @@ final class AppController: ObservableObject {
 
     private func observeSettings() {
         settingsStore.$settings
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] settings in
                 guard let self else { return }
                 self.engine.updateSettings(settings)
                 self.restartLoop()
-                Task {
-                    await self.presenceMonitor.prepare(mode: settings.detectionMode)
+                Task { @MainActor [weak self] in
+                    await self?.presenceMonitor.prepare(mode: settings.detectionMode)
                 }
             }
             .store(in: &cancellables)
@@ -105,17 +113,21 @@ final class AppController: ObservableObject {
 
     private func restartLoop() {
         checkTask?.cancel()
-        let interval = max(2, settingsStore.settings.checkIntervalSeconds)
-        checkTask = Task { [weak self] in
+        let interval = max(2.0, settingsStore.settings.checkIntervalSeconds)
+        checkTask = Task { @MainActor [weak self] in
             while !Task.isCancelled {
-                await self?.runCheckAsync()
-                try? await Task.sleep(nanoseconds: UInt64(interval * 1_000_000_000))
+                guard let self else { return }
+                await self.runCheckAsync()
+                let nanos = UInt64(interval * 1_000_000_000)
+                try? await Task.sleep(nanoseconds: nanos)
             }
         }
     }
 
     private func runCheck() {
-        Task { await runCheckAsync() }
+        Task { @MainActor [weak self] in
+            await self?.runCheckAsync()
+        }
     }
 
     private func runCheckAsync() async {
@@ -132,9 +144,6 @@ final class AppController: ObservableObject {
         } else {
             let sample = await presenceMonitor.samplePresence(mode: settings.detectionMode)
             presence = sample.present
-            if presenceMonitor.fellBackToKeyboardMouse && presenceMonitor.cameraDenied {
-                // one-shot style notice is handled at start; keep quiet here
-            }
         }
 
         let now = Date().timeIntervalSinceReferenceDate
@@ -210,13 +219,17 @@ final class AppController: ObservableObject {
     }
 
     func openSettings() {
+        let closeAction: () -> Void = { [weak self] in
+            self?.settingsWindow?.orderOut(nil)
+        }
+        let root = SettingsView(
+            store: settingsStore,
+            onClose: closeAction,
+            cameraDenied: presenceMonitor.cameraDenied,
+            notificationsDenied: !notifications.authorizationGranted
+        )
+
         if settingsWindow == nil {
-            let root = SettingsView(
-                store: settingsStore,
-                onClose: { [weak self] in self?.settingsWindow?.orderOut(nil) },
-                cameraDenied: presenceMonitor.cameraDenied,
-                notificationsDenied: !notifications.authorizationGranted
-            )
             let hosting = NSHostingController(rootView: root)
             let window = NSWindow(contentViewController: hosting)
             window.title = "SightSave Settings"
@@ -225,12 +238,7 @@ final class AppController: ObservableObject {
             window.center()
             settingsWindow = window
         } else if let hosting = settingsWindow?.contentViewController as? NSHostingController<SettingsView> {
-            hosting.rootView = SettingsView(
-                store: settingsStore,
-                onClose: { [weak self] in self?.settingsWindow?.orderOut(nil) },
-                cameraDenied: presenceMonitor.cameraDenied,
-                notificationsDenied: !notifications.authorizationGranted
-            )
+            hosting.rootView = root
         }
         settingsWindow?.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)

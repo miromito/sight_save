@@ -4,11 +4,23 @@ import Foundation
 import Vision
 
 /// Grabs a single low-resolution frame, runs on-device face detection, then tears the session down.
-final class CameraPresenceDetector: NSObject {
+/// Safe to call from the main actor; capture work runs on a background queue.
+final class CameraPresenceDetector: @unchecked Sendable {
     private let queue = DispatchQueue(label: "com.rodionlitvinoff.SightSave.camera", qos: .utility)
+    private let stateLock = NSLock()
     private var permissionDenied = false
 
-    var isPermissionDenied: Bool { permissionDenied }
+    var isPermissionDenied: Bool {
+        stateLock.lock()
+        defer { stateLock.unlock() }
+        return permissionDenied
+    }
+
+    private func setPermissionDenied(_ value: Bool) {
+        stateLock.lock()
+        permissionDenied = value
+        stateLock.unlock()
+    }
 
     func requestAccessIfNeeded() async -> Bool {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
@@ -16,13 +28,13 @@ final class CameraPresenceDetector: NSObject {
             return true
         case .notDetermined:
             let granted = await AVCaptureDevice.requestAccess(for: .video)
-            permissionDenied = !granted
+            setPermissionDenied(!granted)
             return granted
         case .denied, .restricted:
-            permissionDenied = true
+            setPermissionDenied(true)
             return false
         @unknown default:
-            permissionDenied = true
+            setPermissionDenied(true)
             return false
         }
     }
@@ -77,11 +89,13 @@ final class CameraPresenceDetector: NSObject {
             session.addOutput(output)
 
             let gate = FrameGate()
-            output.setSampleBufferDelegate(gate, queue: DispatchQueue(label: "com.rodionlitvinoff.SightSave.frame"))
+            let frameQueue = DispatchQueue(label: "com.rodionlitvinoff.SightSave.frame")
+            output.setSampleBufferDelegate(gate, queue: frameQueue)
 
             session.startRunning()
             let buffer = gate.waitForFrame(timeout: 2.0)
             session.stopRunning()
+            output.setSampleBufferDelegate(nil, queue: nil)
 
             guard let pixelBuffer = buffer else { return false }
             return detectFace(in: pixelBuffer)
@@ -102,12 +116,13 @@ final class CameraPresenceDetector: NSObject {
     }
 }
 
-private final class FrameGate: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
+/// Receives at most one video frame, then signals waiters. Thread-safe.
+private final class FrameGate: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, @unchecked Sendable {
     private let lock = NSCondition()
     private var pixelBuffer: CVPixelBuffer?
     private var finished = false
 
-    func captureOutput(
+    nonisolated func captureOutput(
         _ output: AVCaptureOutput,
         didOutput sampleBuffer: CMSampleBuffer,
         from connection: AVCaptureConnection
@@ -117,7 +132,7 @@ private final class FrameGate: NSObject, AVCaptureVideoDataOutputSampleBufferDel
         guard !finished else { return }
         pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
         finished = true
-        lock.signal()
+        lock.broadcast()
     }
 
     func waitForFrame(timeout: TimeInterval) -> CVPixelBuffer? {

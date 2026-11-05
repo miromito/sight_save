@@ -1,6 +1,7 @@
 import AppKit
 import Foundation
 
+@MainActor
 enum SoundPlayer {
     /// Common macOS system sounds found in `/System/Library/Sounds`.
     static let systemSoundNames: [String] = [

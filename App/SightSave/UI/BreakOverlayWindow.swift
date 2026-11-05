@@ -4,19 +4,26 @@ import SwiftUI
 @MainActor
 final class BreakOverlayController {
     private var window: NSWindow?
-    var onSnooze: (() -> Void)?
-    var onDismiss: (() -> Void)?
+    var onSnooze: (@MainActor () -> Void)?
+    var onDismiss: (@MainActor () -> Void)?
 
     func show(overtimeText: String, snoozeMinutes: Int) {
+        let snoozeAction: () -> Void = { [weak self] in
+            self?.onSnooze?()
+        }
+        let dismissAction: () -> Void = { [weak self] in
+            self?.onDismiss?()
+        }
+        let view = BreakOverlayView(
+            overtimeText: overtimeText,
+            snoozeMinutes: snoozeMinutes,
+            onSnooze: snoozeAction,
+            onDismiss: dismissAction
+        )
+
         if window == nil {
-            let view = BreakOverlayView(
-                overtimeText: overtimeText,
-                snoozeMinutes: snoozeMinutes,
-                onSnooze: { [weak self] in self?.onSnooze?() },
-                onDismiss: { [weak self] in self?.onDismiss?() }
-            )
             let hosting = NSHostingView(rootView: view)
-            let screen = NSScreen.main?.frame ?? .init(x: 0, y: 0, width: 800, height: 600)
+            let screen = NSScreen.main?.frame ?? CGRect(x: 0, y: 0, width: 800, height: 600)
             let window = NSWindow(
                 contentRect: screen,
                 styleMask: [.borderless],
@@ -31,12 +38,7 @@ final class BreakOverlayController {
             window.contentView = hosting
             self.window = window
         } else if let hosting = window?.contentView as? NSHostingView<BreakOverlayView> {
-            hosting.rootView = BreakOverlayView(
-                overtimeText: overtimeText,
-                snoozeMinutes: snoozeMinutes,
-                onSnooze: { [weak self] in self?.onSnooze?() },
-                onDismiss: { [weak self] in self?.onDismiss?() }
-            )
+            hosting.rootView = view
         }
 
         window?.setFrame(NSScreen.main?.frame ?? .zero, display: true)

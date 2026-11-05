@@ -1,11 +1,10 @@
-import AVFoundation
 import CoreAudio
 import CoreMediaIO
 import Foundation
 
 /// Detects whether another process is actively using the camera or microphone
 /// (typical for video calls), without opening those devices ourselves.
-final class CallDetector {
+struct CallDetector: Sendable {
     func isInCall() -> Bool {
         isCameraRunningSomewhere() || isMicrophoneRunningSomewhere()
     }
@@ -20,7 +19,7 @@ final class CallDetector {
         )
         // Best-effort enable screen-capture device discovery; ignore failures.
         var allow: UInt32 = 1
-        CMIOObjectSetPropertyData(
+        _ = CMIOObjectSetPropertyData(
             CMIOObjectID(kCMIOObjectSystemObject),
             &address,
             0,
@@ -29,11 +28,8 @@ final class CallDetector {
             &allow
         )
 
-        let cameras = cameraDeviceIDs()
-        for deviceID in cameras {
-            if isCMIODeviceRunningSomewhere(deviceID) {
-                return true
-            }
+        for deviceID in cameraDeviceIDs() where isCMIODeviceRunningSomewhere(deviceID) {
+            return true
         }
         return false
     }
@@ -96,10 +92,8 @@ final class CallDetector {
     // MARK: - Microphone (CoreAudio)
 
     private func isMicrophoneRunningSomewhere() -> Bool {
-        for deviceID in audioInputDeviceIDs() {
-            if isAudioDeviceRunningSomewhere(deviceID) {
-                return true
-            }
+        for deviceID in audioInputDeviceIDs() where isAudioDeviceRunningSomewhere(deviceID) {
+            return true
         }
         return false
     }
@@ -150,7 +144,10 @@ final class CallDetector {
             return false
         }
 
-        let raw = UnsafeMutableRawPointer.allocate(byteCount: Int(dataSize), alignment: MemoryLayout<AudioBufferList>.alignment)
+        let raw = UnsafeMutableRawPointer.allocate(
+            byteCount: Int(dataSize),
+            alignment: MemoryLayout<AudioBufferList>.alignment
+        )
         defer { raw.deallocate() }
         guard AudioObjectGetPropertyData(deviceID, &address, 0, nil, &dataSize, raw) == noErr else {
             return false

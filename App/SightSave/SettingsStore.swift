@@ -11,6 +11,7 @@ final class SettingsStore: ObservableObject {
     private let defaults: UserDefaults
     private let key = "SightSave.AppSettings.v1"
 
+    /// Default argument avoided: `@MainActor` inits must not be evaluated in a nonisolated default-arg context.
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
         if let data = defaults.data(forKey: key),
@@ -33,7 +34,7 @@ final class SettingsStore: ObservableObject {
     }
 }
 
-private struct PersistedSettings: Codable {
+private struct PersistedSettings: Codable, Sendable {
     var presenceThresholdMinutes: Double
     var workLimitMinutes: Double
     var restMinutes: Double

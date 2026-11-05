@@ -36,13 +36,15 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
             content: content,
             trigger: nil
         )
-        center.add(request)
+        center.add(request, withCompletionHandler: { _ in })
     }
 
+    // Called by UserNotifications off the main actor.
     nonisolated func userNotificationCenter(
         _ center: UNUserNotificationCenter,
-        willPresent notification: UNNotification
-    ) async -> UNNotificationPresentationOptions {
-        [.banner, .sound]
+        willPresent notification: UNNotification,
+        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+    ) {
+        completionHandler([.banner, .sound])
     }
 }
